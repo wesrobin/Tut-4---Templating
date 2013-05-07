@@ -53,9 +53,29 @@ public:
                 temp += 26;
             }
             return temp % 26 + 'A';
-        } //Encode char
+        } //Decode char
     }
 };
+
+/**
+ * Functor for XOR encrypt
+ */
+//struct Caesar_Decrypt {
+//public:
+//    int key;
+//
+//    XOR_Encrypt(int k) : key(k) {
+//    }
+//
+//    char operator()(char& c) {
+//        if (c == ' ') {
+//            return c;
+//        }//Ignore spaces
+//        else {
+//            
+//        } //Encode char
+//    }
+//};
 
 template <typename Cipher, typename Grouping, typename Packing> class Crypt_Policies {
 public:
@@ -119,6 +139,34 @@ public:
                 return temp % 26 + 'A';
             }
         }); //Encoded using a lambda
+        return str;
+    }
+};
+
+/**
+ * Full specialisation of Crypt_Policies for
+ * caesar, no packing, no grouping
+ */
+template <> class Crypt_Policies <XOR, no_packing, no_grouping> {
+public:
+
+    static std::string encode(std::string& str, int32_t key) {
+        int index = 0;
+        std::transform(str.begin(), str.end(), str.begin(), [&index, &key] (char& c)-> char {
+            int current_key = (key >> (8 * index)) & 255;
+            ++index %= 4;
+            return (c ^ current_key);
+        });
+        return str;
+    }
+
+    static std::string decode(std::string str, int32_t key) {
+        int index = 0;
+        std::transform(str.begin(), str.end(), str.begin(), [&index, &key] (char& c)-> char {
+            int current_key = (key >> (8 * index)) & 255;           
+            ++index %= 4;
+            return (current_key ^ c);
+        });
         return str;
     }
 };

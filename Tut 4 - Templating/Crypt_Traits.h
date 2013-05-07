@@ -9,6 +9,7 @@
 #define	CRYPT_TRAITS_H
 
 #include "Type.h"
+#include <cstdint>
 
 template <typename Cipher, typename Grouping, typename Packing> class Crypt_Traits {
 public:
@@ -41,6 +42,19 @@ public:
 
     static std::string type(void) {
         return "Vigenere, no grouping, no packing";
+    }
+};
+
+/**
+ * Full specialization of Crypt_Traits
+ * XOR, no grouping, no packing
+ */
+template <> class Crypt_Traits <XOR, no_packing, no_grouping> {
+public:
+    int32_t key;
+
+    static std::string type(void) {
+        return "XOR, no grouping, no packing";
     }
 };
 
