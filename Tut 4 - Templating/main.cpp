@@ -19,7 +19,7 @@ using namespace std;
 int main(int argc, char** argv) {
     Crypt<caesar, no_packing, no_grouping> cnn;
     
-    std::cout << cnn.encode() << std::endl;
+    std::cout << cnn.encode("Hello") << std::endl;
     return 0;
 }
 

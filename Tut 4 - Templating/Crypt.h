@@ -9,6 +9,7 @@
 #define	CRYPT_H
 
 #include <string>
+#include <sstream>
 
 #include "Crypt_Policies.h"
 #include "Crypt_Traits.h"
@@ -19,8 +20,10 @@ template <typename Cipher, typename Grouping, typename Packing, typename Traits 
         typedef Policies P;
         typedef Traits T;
 
-        std::string encode (void) {
-            return "Not implemented yet";
+        std::string encode (std::string str) {
+            std::stringstream ss;
+            ss << "Encoding with: " << T::type() << std::endl << P::encode(str);
+            return ss.str();
         }
 
         std::string decode (void) {

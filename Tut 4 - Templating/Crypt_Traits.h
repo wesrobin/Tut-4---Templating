@@ -18,9 +18,16 @@ template <typename Cipher, typename Grouping, typename Packing> class Crypt_Trai
         typedef Grouping grouping;
 };
 
-template <> class Crypt_Traits <caesar, no_grouping, no_packing> {
+/**
+ * Full specialization of Crypt_Traits
+ * caesar, no grouping, no packing
+ */ 
+template <> class Crypt_Traits <caesar, no_packing, no_grouping> {
     public:
         int key;
+        static std::string type(void) {
+            return "Caesar, no grouping, no packing";
+        }
 };
 
 #endif	/* CRYPT_TRAITS_H */
