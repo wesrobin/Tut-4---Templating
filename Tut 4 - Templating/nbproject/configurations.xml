@@ -12,6 +12,8 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>Crypt.h</itemPath>
+      <itemPath>Crypt_Policies.h</itemPath>
       <itemPath>Crypt_Traits.h</itemPath>
       <itemPath>Type.h</itemPath>
       <itemPath>main.cpp</itemPath>
@@ -36,7 +38,14 @@
         <compilerSet>default</compilerSet>
       </toolsSet>
       <compileType>
+        <ccTool>
+          <standard>8</standard>
+        </ccTool>
       </compileType>
+      <item path="Crypt.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Crypt_Policies.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="Crypt_Traits.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Type.h" ex="false" tool="3" flavor2="0">
@@ -63,6 +72,10 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="Crypt.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Crypt_Policies.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="Crypt_Traits.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Type.h" ex="false" tool="3" flavor2="0">

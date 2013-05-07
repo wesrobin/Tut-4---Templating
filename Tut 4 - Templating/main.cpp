@@ -6,6 +6,10 @@
  */
 
 #include <cstdlib>
+#include <iostream>
+
+#include "Crypt.h"
+#include "Type.h"
 
 using namespace std;
 
@@ -13,7 +17,9 @@ using namespace std;
  * 
  */
 int main(int argc, char** argv) {
-
+    Crypt<caesar, no_packing, no_grouping> cnn;
+    
+    std::cout << cnn.encode() << std::endl;
     return 0;
 }
 
