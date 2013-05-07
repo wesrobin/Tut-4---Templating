@@ -15,20 +15,22 @@
 #include "Crypt_Traits.h"
 
 template <typename Cipher, typename Grouping, typename Packing, typename Traits = Crypt_Traits<Cipher, Grouping, Packing>, typename Policies = Crypt_Policies<Cipher, Grouping, Packing> > class Crypt {
-    public:
-    
-        typedef Policies P;
-        typedef Traits T;
+public:
 
-        std::string encode (std::string str) {
-            std::stringstream ss;
-            ss << "Encoding with: " << T::type() << std::endl << P::encode(str);
-            return ss.str();
-        }
+    typedef Policies P;
+    typedef Traits T;
 
-        std::string decode (void) {
-            return "Not implemented yet";
-        }
+    std::string encode(std::string str, decltype(T::key) key) {
+        std::stringstream ss;
+        ss << "Encoding with: " << T::type() << std::endl << P::encode(str, key);
+        return ss.str();
+    }
+
+    std::string decode(std::string str, decltype(T::key) key) {
+        std::stringstream ss;
+        ss << "Decoding with: " << T::type() << std::endl << P::decode(str, key);
+        return ss.str();
+    }
 };
 
 #endif	/* CRYPT_H */
