@@ -10,7 +10,7 @@
 
 #include "Type.h"
 
-template <typename grouping, typename packing, typename cipher> class Crypt_Traits {
+template <typename Cipher, typename Grouping, typename Packing> class Crypt_Traits {
     
 };
 
