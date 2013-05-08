@@ -1,7 +1,8 @@
 /* 
- * File:   Crypt_Policies.h
- * Author: wesley
- *
+ * Wesley Robinson - RBNWES001
+ * Crypt_Policies.h
+ * Policies class which uses specialisations of all the different cipher/group/pack 
+ * options and runs an appropriate method in each case.
  * Created on 07 May 2013, 1:40 PM
  */
 
@@ -168,6 +169,36 @@ public:
 
 /**
  * Full specialisation of Crypt_Policies for
+ * caesar, packing, grouping
+ */
+template <> class Crypt_Policies <caesar, packing, grouping> {
+public:
+    static std::string encode(std::string str, int key) {
+        return "Not implemented";
+    }
+
+    static std::string decode(std::string str, int key) {
+        return "Not implemented";
+    }
+};
+
+/**
+ * Full specialisation of Crypt_Policies for
+ * caesar, packing, no grouping
+ */
+template <> class Crypt_Policies <caesar, packing, no_grouping> {
+public:
+    static std::string encode(std::string str, int key) {
+        return "Not implemented";
+    }
+
+    static std::string decode(std::string str, int key) {
+        return "Not implemented";
+    }
+};
+
+/**
+ * Full specialisation of Crypt_Policies for
  * vigenere, no packing, no grouping
  */
 template <> class Crypt_Policies <vigenere, no_packing, no_grouping> {
@@ -244,6 +275,36 @@ public:
 
 /**
  * Full specialisation of Crypt_Policies for
+ * vigenere, packing, grouping
+ */
+template <> class Crypt_Policies <vigenere, packing, grouping> {
+public:
+    static std::string encode(std::string str, std::string key) {
+        return "Not implemented";
+    }
+
+    static std::string decode(std::string str, std::string key) {
+        return "Not implemented";
+    }
+};
+
+/**
+ * Full specialisation of Crypt_Policies for
+ * vigenere, packing, no grouping
+ */
+template <> class Crypt_Policies <vigenere, packing, no_grouping> {
+public:
+    static std::string encode(std::string str, std::string key) {
+        return "Not implemented";
+    }
+
+    static std::string decode(std::string str, std::string key) {
+        return "Not implemented";
+    }
+};
+
+/**
+ * Full specialisation of Crypt_Policies for
  * caesar, no packing, no grouping
  */
 template <> class Crypt_Policies <XOR, no_packing, no_grouping> {
@@ -296,6 +357,36 @@ public:
             return (current_key ^ c);
         });
         return str;
+    }
+};
+
+/**
+ * Full specialisation of Crypt_Policies for
+ * XOR, packing, grouping
+ */
+template <> class Crypt_Policies <XOR, packing, grouping> {
+public:
+    static std::string encode(std::string str, int32_t key) {
+        return "Not implemented";
+    }
+
+    static std::string decode(std::string str, int32_t key) {
+        return "Not implemented";
+    }
+};
+
+/**
+ * Full specialisation of Crypt_Policies for
+ * XOR, packing, no grouping
+ */
+template <> class Crypt_Policies <XOR, packing, no_grouping> {
+public:
+    static std::string encode(std::string str, int32_t key) {
+        return "Not implemented";
+    }
+
+    static std::string decode(std::string str, int32_t key) {
+        return "Not implemented";
     }
 };
 

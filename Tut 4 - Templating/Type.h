@@ -1,7 +1,7 @@
 /* 
- * File:   Type.h
- * Author: wesley
- *
+ * Wesley Robinson - RBNWES001
+ * Type.h
+ * Type class, defining some class types to be used in traits and policies
  * Created on 07 May 2013, 1:19 PM
  */
 
