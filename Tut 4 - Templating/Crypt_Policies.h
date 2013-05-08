@@ -30,12 +30,33 @@ std::string stripSpaces (std::string& str) {
  * @return the grouped string
  */
 std::string group (std::string& str) {
+    str = stripSpaces(str);
     for (int i = 0 ; i < str.length() ; ++i) {
         if (i % 6 == 0) {
             str.insert(i, " "); //Also inserts at i = 0, will need to remove it!
         }
     }
     return str.substr(1);       //Removes the leading space
+}
+
+/**
+ * Method to generate the rest of the key for the Vigenere cipher, given the prefix
+ * @param str the string to generate the key for
+ * @param keyPref the prefix of the key
+ * @return string containing the whole key
+ */
+std::string generate_key (std::string& str, std::string& keyPref) {
+    std::string temp = "";      //Temp variable to store the generated key
+    std::string::iterator keyIt = keyPref.begin();      //Iterator starts at the beginning of the key
+    for (char c : str) {        //Iterates through str, char at a time
+        if (c == ' ') { temp += ' '; }  //If c is a space, there should be a corresponding space in the key
+        else {
+            if (keyIt == keyPref.end()) { keyIt = keyPref.begin(); }    //If the iterator has reached the end of the string, reset it to the beginning again
+            temp += *keyIt;     //Add the current location of the iterator to the generated key
+            ++keyIt;    //Increment the iterator
+        }
+    }
+    return temp;
 }
 
 /**
@@ -83,15 +104,18 @@ public:
             return c;
         }//Ignore spaces
         else {
-            char temp = (c - 'A' - key);
+            int temp = (c - 'A' - key);
             while (temp < 0) {
                 temp += 26;
             }
-            return temp % 26 + 'A';
+            return (temp % 26) + 'A';
         } //Decode char
     }
 };
 
+/**
+ * General non-specialised method, which is not used, and so is not implemented
+ */
 template <typename Cipher, typename Grouping, typename Packing> class Crypt_Policies {
 public:
 
@@ -124,19 +148,19 @@ public:
 
 /**
  * Full specialisation of Crypt_Policies for
- * caesar, no packing, no grouping
+ * caesar, no packing, grouping
  */
 template <> class Crypt_Policies <caesar, no_packing, grouping> {
 public:
     static std::string encode(std::string& str, int key) {
-        std::transform(str.begin(), str.end(), str.begin(), Caesar_Encrypt(key));
-        str = stripSpaces(str);
-        str = group(str);
+        std::transform(str.begin(), str.end(), str.begin(), Caesar_Encrypt(key));       //First encodes the string
+        str = group(str);       //Groups encoded string
         return str;
     }
 
     static std::string decode(std::string str, int key) {
-//        std::transform(str.begin(), str.end(), str.begin(), Caesar_Decrypt(key));
+        std::transform(str.begin(), str.end(), str.begin(), Caesar_Decrypt(key));
+        str = group(str);
         return str;
     }
 };
@@ -147,8 +171,8 @@ public:
  */
 template <> class Crypt_Policies <vigenere, no_packing, no_grouping> {
 public:
-
     static std::string encode(std::string& str, std::string& key) {
+        key = generate_key(str, key);
         std::transform(str.begin(), str.end(), key.begin(), str.begin(), [](char& c1, const char& c2)->char {
             if (c1 == ' ') {
                 return c1;
@@ -161,6 +185,7 @@ public:
     }
 
     static std::string decode(std::string str, std::string& key) {
+        key = generate_key(str, key);
         std::transform(str.begin(), str.end(), key.begin(), str.begin(), [](char& c1, const char& c2)->char {
             if (c1 == ' ') {
                 return c1;
@@ -173,6 +198,45 @@ public:
                 return temp % 26 + 'A';
             }
         }); //Encoded using a lambda
+        return str;
+    }
+};
+
+/**
+ * Full specialisation of Crypt_Policies for
+ * vigenere, no packing, grouping
+ */
+template <> class Crypt_Policies <vigenere, no_packing, grouping> {
+public:
+    static std::string encode(std::string& str, std::string& key) {
+        key = generate_key(str, key);
+        std::transform(str.begin(), str.end(), key.begin(), str.begin(), [](char& c1, const char& c2)->char {
+            if (c1 == ' ') {
+                return c1;
+            }//Ignore spaces
+            else {
+                return ((c1 - 'A') + (c2 - 'A')) % 26 + 'A';
+            }
+        }); //Encoded using a lambda
+        str = group (str);
+        return str;
+    }
+
+    static std::string decode(std::string str, std::string& key) {
+        key = generate_key(str, key);
+        std::transform(str.begin(), str.end(), key.begin(), str.begin(), [](char& c1, const char& c2)->char {
+            if (c1 == ' ') {
+                return c1;
+            }//Ignore spaces
+            else {
+                char temp = (c1 - 'A') - (c2 - 'A');
+                while (temp < 0) {
+                    temp += 26;
+                }
+                return temp % 26 + 'A';
+            }
+        }); //Encoded using a lambda
+        str = group(str);
         return str;
     }
 };
