@@ -11,12 +11,19 @@
 #include "Type.h"
 #include <cstdint>
 
+/**
+ * Trait that will be used when a combination is used that has not been implemented
+ * in this program.
+ */
 template <typename Cipher, typename Grouping, typename Packing> class Crypt_Traits {
 public:
     char key;
     typedef Cipher cipher;
     typedef Packing packing;
     typedef Grouping grouping;
+    static std::string type(void) {
+        return "Not implemented";
+    }
 };
 
 /**
@@ -81,6 +88,19 @@ public:
 
     static std::string type(void) {
         return "XOR, no grouping, no packing";
+    }
+};
+
+/**
+ * Full specialization of Crypt_Traits
+ * XOR, no grouping, no packing
+ */
+template <> class Crypt_Traits <XOR, no_packing, grouping> {
+public:
+    int32_t key;
+
+    static std::string type(void) {
+        return "XOR, grouping, no packing";
     }
 };
 

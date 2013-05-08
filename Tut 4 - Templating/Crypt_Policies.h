@@ -114,7 +114,8 @@ public:
 };
 
 /**
- * General non-specialised method, which is not used, and so is not implemented
+ * General non-specialised method, which is not used, and so is not implemented.
+ * Will run when the user uses options that are not implemented as specialisations
  */
 template <typename Cipher, typename Grouping, typename Packing> class Crypt_Policies {
 public:
@@ -247,9 +248,37 @@ public:
  */
 template <> class Crypt_Policies <XOR, no_packing, no_grouping> {
 public:
+    static std::string encode(std::string& str, int32_t key) {  //This works by using each 32bit int as a key for 4 separate chars (each 8bits long)
+        int index = 0;  //Index that will be maintained in the lambda below
+        std::transform(str.begin(), str.end(), str.begin(), [&index, &key] (char& c)-> char {   //Uses STL transform to apply XOR on the string to be encrypted
+            int current_key = (key >> (8 * index)) & 255;       //Selects the correct 8 bits to encode the current char with
+            ++index %= 4;       //Maintains the index value, ensuring that subsequent chars will use the next 8 bits of the 32bit int
+            return (c ^ current_key);   //Returns the XOR of the key and the char
+        });
+        return str;
+    }
 
+    static std::string decode(std::string str, int32_t key) {   //Same method as above
+//        int index = 0;
+//        std::transform(str.begin(), str.end(), str.begin(), [&index, &key] (char& c)-> char {
+//            int current_key = (key >> (8 * index)) & 255;           
+//            ++index %= 4;
+//            return (current_key ^ c);
+//        });
+//        return str;
+        return encode(str, key);        //Need only do this because of the nature of XORing!
+    }
+};
+
+/**
+ * Full specialisation of Crypt_Policies for
+ * caesar, no packing, grouping
+ */
+template <> class Crypt_Policies <XOR, no_packing, grouping> {
+public:
     static std::string encode(std::string& str, int32_t key) {
         int index = 0;
+        str = group(str);
         std::transform(str.begin(), str.end(), str.begin(), [&index, &key] (char& c)-> char {
             int current_key = (key >> (8 * index)) & 255;
             ++index %= 4;
@@ -260,6 +289,7 @@ public:
 
     static std::string decode(std::string str, int32_t key) {
         int index = 0;
+//        str = group(str);     //Group has been removed, since there is no way to degroup XOR encrypted stuff.
         std::transform(str.begin(), str.end(), str.begin(), [&index, &key] (char& c)-> char {
             int current_key = (key >> (8 * index)) & 255;           
             ++index %= 4;

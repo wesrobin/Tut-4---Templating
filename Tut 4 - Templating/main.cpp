@@ -36,6 +36,11 @@ int main(int argc, char** argv) {
     Crypt<XOR, no_packing, no_grouping> xnn;
     std::cout << xnn.encode("MATTHEWWOODISACUNT", 1) << std::endl;
     std::cout << xnn.decode("LATTIEWWNODIRACUOT", 1) << std::endl << std::endl;
+    
+    Crypt<XOR, no_packing, grouping> xng;
+    std::cout << xng.encode("MATTHEWW OODISA CUNT", 1) << std::endl;
+    std::cout << xng.decode("LATTI EWVOO EISAB UNU", 1) << std::endl << std::endl;
+    
     return 0;
 }
 
