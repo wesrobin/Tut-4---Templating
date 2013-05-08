@@ -34,6 +34,19 @@ public:
 
 /**
  * Full specialization of Crypt_Traits
+ * caesar, no grouping, no packing
+ */
+template <> class Crypt_Traits <caesar, no_packing, grouping> {
+public:
+    int key;
+
+    static std::string type(void) {
+        return "Caesar, grouping, no packing";
+    }
+};
+
+/**
+ * Full specialization of Crypt_Traits
  * vigenere, no grouping, no packing
  */
 template <> class Crypt_Traits <vigenere, no_packing, no_grouping> {
@@ -42,6 +55,19 @@ public:
 
     static std::string type(void) {
         return "Vigenere, no grouping, no packing";
+    }
+};
+
+/**
+ * Full specialization of Crypt_Traits
+ * vigenere, no grouping, no packing
+ */
+template <> class Crypt_Traits <vigenere, no_packing, grouping> {
+public:
+    std::string key;
+
+    static std::string type(void) {
+        return "Vigenere, grouping, no packing";
     }
 };
 
